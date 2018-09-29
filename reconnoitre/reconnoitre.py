@@ -50,6 +50,7 @@ def main():
     parser = ArgumentParser()
     parser.add_argument("-t",               dest="target_hosts", required=True, help="Set a target range of addresses to target. Ex 10.11.1.1-255" )
     parser.add_argument("-o",               dest="output_directory", required=True, help="Set the output directory. Ex /root/Documents/labs/")
+    parser.add_argument("-n",               dest="named_hosts", required=False, help="Set a target address and name in directory structure and reporting. Ex 10.11.1.15 -n examplebox. Does not work with target file", default=False)
     parser.add_argument("-w",               dest="wordlist", required=False, help="Set the wordlist to use for generated commands. Ex /usr/share/wordlist.txt", default=False)
     parser.add_argument("-p",               dest="port", required=False, help="Set the port to use. Leave blank to use discovered ports. Useful to force virtual host scanning on non-standard webserver ports.", default=80)
     parser.add_argument("--pingsweep",      dest="ping_sweep", action="store_true", help="Write a new target.txt by performing a ping sweep and discovering live hosts.", default=False)
@@ -101,12 +102,13 @@ def main():
         find_dns(arguments.target_hosts, arguments.output_directory, arguments.quiet)
 
     if arguments.perform_service_scan is True:
+        ident = arguments.named_hosts if arguments.named_hosts else arguments.target_hosts
         print("[#] Performing service scans")
         if arguments.find_dns_servers is True:
-            service_scan(arguments.target_hosts, arguments.output_directory, arguments.find_dns_servers, arguments.quiet, arguments.quick, arguments.no_udp_service_scan)
+            service_scan(arguments.target_hosts, ident, arguments.output_directory, arguments.find_dns_servers, arguments.quiet, arguments.quick, arguments.no_udp_service_scan)
         else:
-            service_scan(arguments.target_hosts, arguments.output_directory, '', arguments.quiet, arguments.quick, arguments.no_udp_service_scan)
-
+            service_scan(arguments.target_hosts, ident, arguments.output_directory, '', arguments.quiet, arguments.quick, arguments.no_udp_service_scan)
+     
     if arguments.perform_snmp_walk is True:
         print("[#] Performing SNMP walks")
         snmp_walk(arguments.target_hosts, arguments.output_directory, arguments.quiet)
