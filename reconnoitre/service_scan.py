@@ -35,7 +35,7 @@ def nmap_scan(ip_address, ident, output_directory, dns_server, quick, no_udp_ser
    udpresults = "" if no_udp_service_scan is True else subprocess.check_output(UDPSCAN, shell=True)
    tcpresults = subprocess.check_output(TCPSCAN, shell=True)
 
-   write_recommendations(tcpresults + udpresults, ip_address, ident, output_directory)
+   write_recommendations(tcpresults + udpresults, ip_address, output_directory, ident=ident)
    print("[*] TCP%s scans completed for %s" % (("" if no_udp_service_scan is True else "/UDP"), ip_address))
 
 
@@ -47,7 +47,7 @@ def valid_ip(address):
         return False
 
 
-def target_file(target_hosts, output_directory, dns_server, quiet, quick, no_udp_service_scan):
+def target_file(target_hosts, ident, output_directory, dns_server, quiet, quick, no_udp_service_scan):
     targets = load_targets(target_hosts, output_directory, quiet)
     target_file = open(targets, 'r')
     try:
@@ -84,10 +84,10 @@ def target_ip(target_hosts, output_directory, ident, dns_server, quiet, quick, n
     p.start()
 
 
-def service_scan(target_hosts, ident, output_directory, dns_server, quiet, quick, no_udp_service_scan):
+def service_scan(target_hosts, output_directory, dns_server, quiet, quick, no_udp_service_scan, ident):
     check_directory(output_directory)
 
     if(valid_ip(target_hosts)):
-        target_ip(target_hosts, output_directory, ident, dns_server, quiet, quick, no_udp_service_scan)
+        target_ip(target_hosts, output_directory, dns_server, quiet, quick, no_udp_service_scan, ident)
     else:
-        target_file(target_hosts, output_directory, ident, dns_server, quiet, quick, no_udp_service_scan)
+        target_file(target_hosts, output_directory, dns_server, quiet, quick, no_udp_service_scan, ident)
