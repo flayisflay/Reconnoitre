@@ -105,9 +105,9 @@ def main():
         ident = arguments.named_hosts if arguments.named_hosts else arguments.target_hosts
         print("[#] Performing service scans")
         if arguments.find_dns_servers is True:
-            service_scan(arguments.target_hosts, ident, arguments.output_directory, arguments.find_dns_servers, arguments.quiet, arguments.quick, arguments.no_udp_service_scan)
+            service_scan(arguments.target_hosts, arguments.output_directory, ident, arguments.find_dns_servers, arguments.quiet, arguments.quick, arguments.no_udp_service_scan)
         else:
-            service_scan(arguments.target_hosts, ident, arguments.output_directory, '', arguments.quiet, arguments.quick, arguments.no_udp_service_scan)
+            service_scan(arguments.target_hosts, arguments.output_directory, ident, '', arguments.quiet, arguments.quick, arguments.no_udp_service_scan)
      
     if arguments.perform_snmp_walk is True:
         print("[#] Performing SNMP walks")

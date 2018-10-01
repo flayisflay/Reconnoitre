@@ -16,7 +16,7 @@ def load_targets(target_hosts, output_directory, quiet):
     else:
         return output_directory + "/targets.txt"
 
-
+#checked
 def create_dir_structure(ident, output_directory):
     print("[+] Creating directory structure for " + ident)
 
